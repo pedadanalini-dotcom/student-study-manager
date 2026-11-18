@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="A calm, organized dashboard for planning your study time and tracking progress.">
+  <title>StudySpace | Student Study Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script type="module" src="auth.js"></script>
+</head>
+<body data-auth-page="dashboard">
+  <div class="auth-loading" id="authLoading" role="status" aria-live="polite">
+    <span class="auth-loading-mark" aria-hidden="true">S</span>
+    <p id="authLoadingMessage">Checking your sign-in...</p>
+    <a id="authRetryLink" href="signin.html" hidden>Return to sign in</a>
+  </div>
+  <div class="app-shell" id="appShell" hidden>
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#dashboard" aria-label="StudySpace home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M5 8.5c4.2-1.6 7.9-1 11 1.2v15c-3.1-2.2-6.8-2.8-11-1.2v-15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M27 8.5c-4.2-1.6-7.9-1-11 1.2v15c3.1-2.2 6.8-2.8 11-1.2v-15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M16 10v14" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </span>
+        <span class="brand-copy"><strong>StudySpace</strong><small>Student study manager</small></span>
+      </a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="navigation">
+        <a class="nav-link is-active" href="#dashboard" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="4" rx="1.5"/><rect x="13.5" y="10.5" width="7" height="10" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a class="nav-link" href="#planner">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17M8 13h3M8 16.5h3M14 13h2"/></svg>
+          <span>Study planner</span>
+        </a>
+        <a class="nav-link" href="#timetable">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>
+          <span>Weekly timetable</span>
+        </a>
+        <a class="nav-link" href="#schedule">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M7.5 3.5v3M16.5 3.5v3M3.5 9.5h17M8 13h3M8 16.5h3M14 13h2"/></svg>
+          <span>Today's schedule</span>
+        </a>
+        <a class="nav-link" href="#upcoming">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5h13.5v16H7a3 3 0 0 1-3-3v-10a3 3 0 0 1 3-3Z"/><path d="M4 8h16.5M8.5 12h7M8.5 15.5h5"/></svg>
+          <span>Upcoming tasks</span>
+        </a>
+        <a class="nav-link" href="#progressTracker">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5h16M6.5 16V11M12 16V5.5M17.5 16v-8"/></svg>
+          <span>Progress tracker</span>
+        </a>
+        <a class="nav-link" href="#studyGuide">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z"/><path d="M4 6h16M8 10h8M8 13.5h5"/></svg>
+          <span>Study guide</span>
+        </a>
+        <a class="nav-link" href="#notes">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3.5H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9.5Z"/><path d="M14 3.5v6h6M8 13h8M8 16.5h6"/></svg>
+          <span>Personal notes</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-tip">
+          <span class="tip-icon" aria-hidden="true">✦</span>
+          <p><strong>Small steps add up.</strong><br>One focused session at a time.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar" id="studentAvatar" aria-hidden="true">S</div>
+          <img class="profile-photo" id="profilePhoto" alt="" hidden>
+          <div class="profile-copy"><strong id="profileName">Student</strong><span id="profileEmail"></span></div>
+          <span class="profile-status" aria-label="Your data is saved on this device"></span>
+        </div>
+        <button class="logout-button" id="logoutButton" type="button">Log out</button>
+      </div>
+    </aside>
+
+    <button class="sidebar-scrim" id="sidebarScrim" type="button" aria-label="Close navigation"></button>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <button class="menu-toggle icon-button" id="menuToggle" type="button" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="breadcrumb"><span>Workspace</span><span class="breadcrumb-divider">/</span><strong>Dashboard</strong></div>
+        <div class="topbar-right">
+          <span class="today-chip"><span class="live-dot" aria-hidden="true"></span> Your study space</span>
+          <button class="button button-primary top-add-task" type="button" data-open-dialog="taskDialog" aria-label="Add a task">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Add a task</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <p class="auth-notice" id="dashboardAuthNotice" role="alert" hidden></p>
+        <section class="welcome-row" aria-labelledby="welcomeTitle">
+          <div>
+            <p class="eyebrow" id="todayDate"></p>
+            <h1 id="welcomeTitle">Welcome back<span class="welcome-period">.</span></h1>
+            <p class="welcome-subtitle">A little progress each day adds up to big results. Here's your study snapshot.</p>
+          </div>
+          <button class="button button-secondary" type="button" data-open-dialog="subjectDialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Manage subjects</span>
+          </button>
+        </section>
+
+        <section class="stats-grid" aria-label="Study overview">
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon icon-lilac" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z"/><path d="M4 6h16M8 10h8M8 13.5h5"/></svg></span><span class="stat-caption">YOUR LEARNING</span></div>
+            <div class="stat-value" id="subjectCount">0</div>
+            <div class="stat-bottom"><span class="stat-title">Total subjects</span><span class="stat-note">in your library</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon icon-green" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span><span class="stat-caption">NICE WORK</span></div>
+            <div class="stat-value" id="completedCount">0</div>
+            <div class="stat-bottom"><span class="stat-title">Completed tasks</span><span class="stat-note">all time</span></div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-top"><span class="stat-icon icon-amber" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg></span><span class="stat-caption">UP NEXT</span></div>
+            <div class="stat-value" id="pendingCount">0</div>
+            <div class="stat-bottom"><span class="stat-title">Pending tasks</span><span class="stat-note">ready when you are</span></div>
+          </article>
+          <article class="stat-card progress-stat" id="progress">
+            <div class="stat-top"><span class="stat-icon icon-blue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18.5h16M6.5 15V10M12 15V5M17.5 15V8"/></svg></span><span class="stat-caption">KEEP IT GOING</span></div>
+            <div class="progress-stat-content">
+              <div><div class="stat-value"><span id="progressPercent">0</span><span class="percent-sign">%</span></div><div class="stat-title">Study progress</div></div>
+              <div class="progress-ring" id="progressRing" role="img" aria-label="0 percent study progress"><span id="ringPercent">0%</span></div>
+            </div>
+            <div class="progress-track" aria-hidden="true"><span id="progressBar"></span></div>
+          </article>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="panel schedule-panel" id="schedule" aria-labelledby="scheduleTitle">
+            <div class="panel-heading">
+              <div><p class="section-kicker">PLAN YOUR DAY</p><h2 id="scheduleTitle">Today's study schedule</h2></div>
+              <span class="heading-date" id="scheduleDate"></span>
+            </div>
+            <div class="schedule-list" id="scheduleList"></div>
+            <div class="schedule-footer">
+              <span><span class="schedule-legend-dot"></span> A balanced day starts with a plan</span>
+            </div>
+          </section>
+
+          <section class="panel tasks-panel" id="upcoming" aria-labelledby="upcomingTitle">
+            <div class="panel-heading">
+              <div><p class="section-kicker">STAY ON TRACK</p><h2 id="upcomingTitle">Upcoming tasks</h2></div>
+              <button class="text-button" type="button" data-open-dialog="taskDialog">+ Add task</button>
+            </div>
+            <div class="task-list" id="taskList"></div>
+            <details class="completed-details" id="completedDetails">
+              <summary id="completedSummary"></summary>
+              <div class="task-list completed-task-list" id="completedTaskList"></div>
+            </details>
+            <div class="tasks-footer">
+              <span id="taskSummary">Your task list</span>
+              <button class="button button-small button-secondary" type="button" data-open-dialog="taskDialog">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                <span>New task</span>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel module-panel" id="planner" aria-labelledby="plannerTitle">
+          <div class="module-heading">
+            <div><p class="section-kicker">PLAN A FOCUSED SESSION</p><h2 id="plannerTitle">Study planner</h2><p class="module-description">Choose a subject and topic, then set aside time to study.</p></div>
+          </div>
+          <div class="planner-layout">
+            <form class="editor-form" id="plannerForm">
+              <h3 id="plannerFormTitle">Plan a study task</h3>
+              <label class="form-field">Subject<input id="plannerSubject" name="subject" type="text" list="subjectSuggestions" maxlength="48" placeholder="e.g. Biology" required></label>
+              <label class="form-field">Topic<input id="plannerTopic" name="topic" type="text" maxlength="90" placeholder="e.g. Cell structure" required></label>
+              <div class="form-row">
+                <label class="form-field">Study date<input id="plannerDate" name="studyDate" type="date" required></label>
+                <label class="form-field">Start time<input id="plannerStartTime" name="startTime" type="time" required></label>
+              </div>
+              <label class="form-field">Duration
+                <select id="plannerDuration" name="duration">
+                  <option value="15">15 minutes</option>
+                  <option value="25">25 minutes</option>
+                  <option value="30">30 minutes</option>
+                  <option value="45" selected>45 minutes</option>
+                  <option value="60">1 hour</option>
+                  <option value="90">1 hour 30 minutes</option>
+                  <option value="120">2 hours</option>
+                </select>
+              </label>
+              <p class="form-hint" id="plannerFormMessage" role="status"></p>
+              <div class="editor-actions"><button class="button button-primary" id="plannerSubmit" type="submit">Add study task</button><button class="button button-secondary" id="plannerCancelEdit" type="button" hidden>Cancel edit</button></div>
+            </form>
+            <div class="planner-task-area">
+              <div class="list-heading"><div><h3>All study tasks</h3><span id="plannerTaskCount">0 tasks planned</span></div></div>
+              <div class="planner-task-list" id="plannerTaskList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel module-panel" id="timetable" aria-labelledby="timetableTitle">
+          <div class="module-heading">
+            <div><p class="section-kicker">BUILD A WEEKLY ROUTINE</p><h2 id="timetableTitle">Weekly timetable</h2><p class="module-description">Add recurring study blocks for any day of the week.</p></div>
+          </div>
+          <form class="timetable-form" id="timetableForm">
+            <label class="form-field">Day
+              <select id="timetableDay" name="day">
+                <option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4">Friday</option><option value="5">Saturday</option><option value="6">Sunday</option>
+              </select>
+            </label>
+            <label class="form-field">Subject<input id="timetableSubject" name="subject" type="text" list="subjectSuggestions" maxlength="48" placeholder="e.g. Mathematics" required></label>
+            <label class="form-field">Start time<input id="timetableStartTime" name="startTime" type="time" required></label>
+            <label class="form-field">Duration
+              <select id="timetableDuration" name="duration">
+                <option value="15">15 minutes</option><option value="25">25 minutes</option><option value="30">30 minutes</option><option value="45" selected>45 minutes</option><option value="60">1 hour</option><option value="90">1 hour 30 minutes</option><option value="120">2 hours</option>
+              </select>
+            </label>
+            <div class="editor-actions"><button class="button button-primary" id="timetableSubmit" type="submit">Add to timetable</button><button class="button button-secondary" id="timetableCancelEdit" type="button" hidden>Cancel edit</button></div>
+          </form>
+          <p class="form-hint" id="timetableFormMessage" role="status"></p>
+          <div class="week-grid" id="timetableDays"></div>
+        </section>
+
+        <section class="panel module-panel" id="progressTracker" aria-labelledby="progressTrackerTitle">
+          <div class="module-heading">
+            <div><p class="section-kicker">SEE HOW FAR YOU'VE COME</p><h2 id="progressTrackerTitle">Study progress</h2><p class="module-description">Progress is based on the topics and study tasks saved in your planner.</p></div>
+          </div>
+          <div class="topic-progress-stats" aria-label="Topic progress overview">
+            <article class="topic-stat"><span class="topic-stat-label">TOTAL TOPICS</span><strong id="topicTotal">0</strong><span>in your study plan</span></article>
+            <article class="topic-stat"><span class="topic-stat-label">COMPLETED</span><strong id="topicCompleted">0</strong><span>topics finished</span></article>
+            <article class="topic-stat"><span class="topic-stat-label">PENDING</span><strong id="topicPending">0</strong><span>still to work on</span></article>
+            <article class="topic-stat topic-stat-overall"><span class="topic-stat-label">OVERALL PROGRESS</span><strong><span id="topicOverallPercent">0</span><span class="topic-percent-sign">%</span></strong><div class="progress-track"><span id="topicOverallBar"></span></div></article>
+          </div>
+          <div class="progress-detail-grid">
+            <section aria-labelledby="subjectProgressTitle">
+              <div class="list-heading"><div><h3 id="subjectProgressTitle">Subject-wise progress</h3><span>Completed topics compared with planned topics</span></div></div>
+              <div class="subject-progress-list" id="subjectProgressList"></div>
+            </section>
+            <section aria-labelledby="topicProgressTitle">
+              <div class="list-heading"><div><h3 id="topicProgressTitle">Topic status</h3><span>Complete all study tasks for a topic to finish it</span></div></div>
+              <div class="topic-progress-list" id="topicProgressList"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="panel module-panel" id="studyGuide" aria-labelledby="studyGuideTitle">
+          <div class="module-heading guide-module-heading">
+            <div><p class="section-kicker">LEARN AT YOUR OWN PACE</p><h2 id="studyGuideTitle">Programming study guide</h2><p class="module-description">Choose a language for a structured starting path, then mark topics complete as you learn.</p></div>
+            <span class="guide-completion-summary" id="guideCompletionSummary" aria-live="polite"></span>
+          </div>
+          <div class="guide-language-grid" id="guideLanguageTabs" role="tablist" aria-label="Choose a programming language"></div>
+          <div class="guide-content" id="guideContent" role="tabpanel" aria-live="polite"></div>
+        </section>
+
+        <section class="panel module-panel" id="notes" aria-labelledby="notesTitle">
+          <div class="module-heading">
+            <div><p class="section-kicker">KEEP YOUR IDEAS CLOSE</p><h2 id="notesTitle">Personal study notes</h2><p class="module-description">Save useful explanations, questions, and reminders alongside your subjects.</p></div>
+          </div>
+          <div class="notes-layout">
+            <form class="editor-form notes-form" id="noteForm">
+              <h3 id="noteFormTitle">Create a note</h3>
+              <label class="form-field">Note title<input id="noteTitle" name="title" type="text" maxlength="100" placeholder="e.g. Binary search summary" required></label>
+              <label class="form-field">Subject
+                <select id="noteSubject" name="subject" required>
+                  <option value="" selected disabled>Choose a subject</option>
+                </select>
+              </label>
+              <label class="form-field">Description<textarea id="noteDescription" name="description" rows="6" maxlength="5000" placeholder="Write your study notes here..." required></textarea></label>
+              <p class="form-hint" id="noteFormMessage" role="status"></p>
+              <div class="editor-actions"><button class="button button-primary" id="noteSubmit" type="submit">Save note</button><button class="button button-secondary" id="noteCancelEdit" type="button" hidden>Cancel edit</button></div>
+            </form>
+            <div class="notes-list-area">
+              <div class="notes-list-toolbar">
+                <div class="list-heading"><div><h3>Saved notes</h3><span id="noteCount">0 notes</span></div></div>
+                <label class="notes-search"><span class="sr-only">Search notes</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.5 4.5"/></svg><input id="notesSearch" type="search" placeholder="Search notes..."></label>
+              </div>
+              <div class="notes-list" id="notesList"></div>
+            </div>
+          </div>
+        </section>
+
+        <datalist id="subjectSuggestions"></datalist>
+        <div class="page-footer"><span>Made for focused learning</span><span class="footer-separator">·</span><span>Your study data stays on this device</span></div>
+        <p class="sr-only" id="liveMessage" role="status" aria-live="polite"></p>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="app-dialog" id="taskDialog" aria-labelledby="taskDialogTitle">
+    <form id="taskForm">
+      <div class="dialog-heading"><div><p class="section-kicker">MAKE A PLAN</p><h2 id="taskDialogTitle">Add a task</h2></div><button class="dialog-close icon-button" type="button" data-close-dialog aria-label="Close dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <label class="form-field">Task name<input name="title" type="text" maxlength="90" placeholder="e.g. Review chapter 4" required></label>
+      <div class="form-row">
+        <label class="form-field">Subject<select name="subject" id="taskSubject"></select></label>
+        <label class="form-field">Due date<input name="dueDate" id="taskDueDate" type="date" required></label>
+      </div>
+      <p class="form-hint" id="taskFormHint"></p>
+      <div class="dialog-actions"><button class="button button-secondary" type="button" data-close-dialog>Cancel</button><button class="button button-primary" type="submit">Save task</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="app-dialog subject-dialog" id="subjectDialog" aria-labelledby="subjectDialogTitle">
+    <div class="dialog-heading"><div><p class="section-kicker">YOUR LEARNING</p><h2 id="subjectDialogTitle">Manage subjects</h2></div><button class="dialog-close icon-button" type="button" data-close-dialog aria-label="Close dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <form id="subjectForm" class="subject-form">
+      <label class="form-field" for="subjectName">Add a subject</label>
+      <div class="subject-input-row"><input id="subjectName" name="name" type="text" maxlength="48" placeholder="e.g. Biology" required><button class="button button-primary" type="submit">Add</button></div>
+    </form>
+    <ul class="subject-list" id="subjectList"></ul>
+  </dialog>
+</body>
+</html>

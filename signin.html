@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Sign in to your Student Study Manager account.">
+  <title>Sign in | StudySpace</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="auth.js"></script>
+</head>
+<body data-auth-page="signin">
+  <main class="auth-page">
+    <section class="auth-card" aria-labelledby="authTitle">
+      <a class="auth-brand" href="signin.html" aria-label="StudySpace sign-in">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M5 8.5c4.2-1.6 7.9-1 11 1.2v15c-3.1-2.2-6.8-2.8-11-1.2v-15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M27 8.5c-4.2-1.6-7.9-1-11 1.2v15c3.1-2.2 6.8-2.8 11-1.2v-15Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M16 10v14" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </span>
+        <span class="auth-brand-copy"><strong>StudySpace</strong><small>Student Study Manager</small></span>
+      </a>
+
+      <div class="auth-card-content">
+        <p class="section-kicker">YOUR LEARNING, IN ONE PLACE</p>
+        <h1 id="authTitle">Welcome to your study space.</h1>
+        <p class="auth-description" id="authDescription">Sign in with Google or your email and password to continue to your personal student dashboard.</p>
+
+        <button class="google-button" id="googleSignInButton" type="button" aria-describedby="authMessage">
+          <span class="google-mark" aria-hidden="true">G</span>
+          <span data-signin-label>Continue with Google</span>
+        </button>
+        <div class="auth-divider" aria-hidden="true"><span>or continue with email</span></div>
+        <form class="email-auth-form" id="emailAuthForm" novalidate>
+          <label class="auth-field">
+            <span>Email address</span>
+            <input id="authEmail" name="email" type="email" autocomplete="email" required>
+          </label>
+          <label class="auth-field">
+            <span>Password</span>
+            <input id="authPassword" name="password" type="password" autocomplete="current-password" required>
+          </label>
+          <label class="auth-field" id="confirmPasswordField" hidden>
+            <span>Confirm password</span>
+            <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" disabled>
+          </label>
+          <button class="auth-text-button auth-forgot-button" id="forgotPasswordButton" type="button">Forgot password?</button>
+          <button class="email-submit-button" id="emailSubmitButton" type="submit">
+            <span data-email-submit-label>Sign in with email</span>
+          </button>
+        </form>
+        <p class="auth-mode-switch">
+          <span id="authModeText">New to StudySpace?</span>
+          <button class="auth-text-button" id="authModeToggle" type="button">Create an account</button>
+        </p>
+        <p class="auth-message" id="authMessage" role="status" aria-live="polite" hidden></p>
+        <p class="auth-privacy">Authentication is handled securely by Google and Firebase. This app never stores your password.</p>
+      </div>
+    </section>
+
+    <aside class="auth-side-note" aria-hidden="true">
+      <span class="auth-side-icon">
+        <svg viewBox="0 0 64 64" fill="none">
+          <path d="M10 17.5c8-3 15-1.8 22 2.7v32c-7-4.5-14-5.7-22-2.7v-32Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M54 17.5c-8-3-15-1.8-22 2.7v32c7-4.5 14-5.7 22-2.7v-32Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M21 27h5M21 34h5M43 27h-5M43 34h-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <p class="auth-side-kicker">SMALL STEPS ADD UP</p>
+      <p class="auth-side-copy">Make room for focused learning, one session at a time.</p>
+    </aside>
+  </main>
+</body>
+</html>
